@@ -84,7 +84,7 @@ const number = document.querySelectorAll('.number');
         } else if (activatedOperator) {
             secondNumberDisplayer.textContent += e.target.textContent;
             secondNumber += [Number(e.target.textContent)];
-            console.log(secondNumber, 'second at numbers')
+            console.log(secondNumber, 'second at numbers');
             return secondNumber;
         }
 }));
@@ -92,22 +92,41 @@ const number = document.querySelectorAll('.number');
 const operators = document.querySelectorAll('.operator');
     operators.forEach(item =>
         item.addEventListener('click', e => {
+            if (!activatedOperator) {
             activatedOperator++;
             operator = e.target.textContent;  
-            operatorDisplayer.textContent = operator;   
+            operatorDisplayer.textContent = operator;  
+            } else if (activatedOperator && secondNumber) {
+               calculate();
+               operator = e.target.textContent;  
+               operatorDisplayer.textContent = operator;
+            } else {
+                operator = e.target.textContent;  
+                operatorDisplayer.textContent = operator;
+            }
         return operator;
-            
 })); 
 
 
 const equals = document.getElementById('equal');
     equals.addEventListener('click', () => {
-     let number = [firstNumber, secondNumber];
+     calculate();
+});
+
+const calculate = () => {
+    let number = [firstNumber, secondNumber];
      number = number.map(n => parseInt(n));
+     if (operator == '/' && secondNumber == 0) {
+        numberDisplayer.textContent = 'Why do you hate me?'
+        secondNumberDisplayer.textContent = '';
+        operatorDisplayer.textContent = '';
+        return 'You son of a bitch' ;
+     } else {
      result = operate(operator, number);
      resultToFirstNumber();
      return result;
-});
+     }
+};
 
 screen.appendChild(secondNumberDisplayer);
 screen.appendChild(operatorDisplayer);
