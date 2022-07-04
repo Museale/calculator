@@ -1,40 +1,30 @@
-const addition = document.getElementById('add');
-    addition.addEventListener('click', () => 
-        (number) => number.reduce((a,b) => a + b));
-      
-const division = document.getElementById('divide');
-    division.addEventListener('click', () => 
-        (number) => number.reduce((a,b) => a / b));
-    
-const subtraction = document.getElementById('subtract');
-    subtraction.addEventListener('click', () => 
-        (number) => number.reduce((a,b) => a - b));
-    
-const multiplication = document.getElementById('multiply');
-    multiplication.addEventListener('click', () => 
-        (number) => number.reduce((a,b) => a * b));
-
-       
-const operate = function (operator, ...sum) {
-    switch (true) {
-        case (operator === addition) : addition(sum);
-        break;
-        case (operator === division) : division(sum);
-        break;
-        case (operator === subtraction) : subtraction(sum);
-        break;
-        case (operator === multiplication) : multiplication(sum);
-        break;
-    };
-};
-
 let operator = '';
-
+let firstNumber = '';
+let secondNumber = '';
+let result = '';
 let activatedOperator = 0;
 
-let firstSum = 0;
+const operate = function (operator, number) {
+    switch (true) {
+        case (operator === '+' ) : return result  = number.reduce((a,b) => a + b);
+        break;
+        case (operator === '/') : return number.reduce((a,b) => a / b);
+        break;
+        case (operator === '-') : return number.reduce((a,b) => a - b);
+        break;
+        case (operator === 'x') : return number.reduce((a,b) => a * b);
+        break;
+    }; 
+};
 
-let secondSum = 0;
+const resultToFirstNumber = () => {
+    operatorDisplayer.textContent = '';
+    secondNumberDisplayer.textContent = '';
+    secondNumber = '';
+    firstNumber = result;
+    numberDisplayer.textContent = result;
+    return firstNumber;
+};
 
 const screen = document.getElementById('display');
 
@@ -48,56 +38,76 @@ const operatorDisplayer = document.createElement('p');
     operatorDisplayer.classList.add('clickedNum');
 
 const AC = document.getElementById('ac');
-    AC.addEventListener('click', e => {
+    AC.addEventListener('click', () => {
+        firstNumber = '';
+        secondNumber = '';
+        result = '';
+        operator = '';
+        activatedOperator = 0;
         numberDisplayer.textContent = '';
+        secondNumberDisplayer.textContent =  '';
         operatorDisplayer.textContent = '';
+       
 });
+
+const c = document.getElementById('c');
+    c.addEventListener('click', e => {
+        let allNumbers = [...firstNumber, operator, ...secondNumber];
+        console.log(allNumbers)
+        console.log(allNumbers.splice(allNumbers.length - 1 , 1));
+        console.log(allNumbers
+            )
+        console.log(firstNumber, 'first')
+        console.log(secondNumber, 'second')
+        console.log(operator, 'op')
+
+        });
+    
+        // It should check wether secondNumD has a length
+        //It should pop the last eleemnt of SND
+        
+
+        //if SecondNumD does not have a length it shuld delete the operator if operator is true
+
+        //if operator is not true it should delete the last element of FirstNum
+
+    
     
 const number = document.querySelectorAll('.number');
     number.forEach(item => 
     item.addEventListener('click', e => {
-        if (operator < 1) {
+        if (!activatedOperator && !result) {
        numberDisplayer.textContent += e.target.textContent;
-        firstSum = Number(e.target.textContent);
-        console.log(firstSum)
-        return firstSum;
-        } else {
+        firstNumber += [Number(e.target.textContent)];
+        console.log(firstNumber, 'first at numbers')
+        return firstNumber;
+        } else if (activatedOperator) {
             secondNumberDisplayer.textContent += e.target.textContent;
-            secondSum += e.target.textContent;
-            return secondSum;
-        }    
+            secondNumber += [Number(e.target.textContent)];
+            console.log(secondNumber, 'second at numbers')
+            return secondNumber;
+        }
 }));
 
 const operators = document.querySelectorAll('.operator');
-    
-            console.log(firstSum, 'isgreaterthan')
-        operators.forEach(item =>
-         item.addEventListener('click', e => {
+    operators.forEach(item =>
+        item.addEventListener('click', e => {
             activatedOperator++;
             operator = e.target.textContent;  
-            operatorDisplayer.textContent = operator;
+            operatorDisplayer.textContent = operator;   
         return operator;
-         
+            
 })); 
 
 
-
 const equals = document.getElementById('equal');
-    equals.addEventListener('click', e => {
-       
-        numberDisplayer.textContent = '';
-        operatorDisplayer.textContent = '';
-        secondNumberDisplayer.textContent = '';
-        activatedOperator--;
-        console.log(operator)
-        let total = operate(operator, firstSum);
-        numberDisplayer.textContent = total;
-        console.log(total)
-    
+    equals.addEventListener('click', () => {
+     let number = [firstNumber, secondNumber];
+     number = number.map(n => parseInt(n));
+     result = operate(operator, number);
+     resultToFirstNumber();
+     return result;
 });
-
-
-
 
 screen.appendChild(secondNumberDisplayer);
 screen.appendChild(operatorDisplayer);
