@@ -52,26 +52,27 @@ const AC = document.getElementById('ac');
 
 const c = document.getElementById('c');
     c.addEventListener('click', e => {
-        let allNumbers = [...firstNumber, operator, ...secondNumber];
-        console.log(allNumbers)
-        console.log(allNumbers.splice(allNumbers.length - 1 , 1));
-        console.log(allNumbers
-            )
-        console.log(firstNumber, 'first')
-        console.log(secondNumber, 'second')
-        console.log(operator, 'op')
-
+        if (secondNumber) {
+            secondNumber = Array.from(secondNumber);
+            secondNumber.pop();
+            secondNumberDisplayer.textContent = secondNumber;
+            console.log(secondNumber)
+            return secondNumber;
+        }
+        if (!secondNumber && operator) {
+            operator = '';
+            activatedOperator--;
+            operatorDisplayer.textContent = '';
+            return operator;
+        }
+        if (!secondNumber && !operator) {
+            firstNumber = Array.from(firstNumber);
+            firstNumber.pop();
+            numberDisplayer.textContent = firstNumber;
+            return firstNumber;
+        }
+     
         });
-    
-        // It should check wether secondNumD has a length
-        //It should pop the last eleemnt of SND
-        
-
-        //if SecondNumD does not have a length it shuld delete the operator if operator is true
-
-        //if operator is not true it should delete the last element of FirstNum
-
-    
     
 const number = document.querySelectorAll('.number');
     number.forEach(item => 
