@@ -3,6 +3,7 @@ let firstNumber = '';
 let secondNumber = '';
 let result = '';
 let activatedOperator = 0;
+let activatedDecimal = 0;
 
 const operate = function (operator, number) {
     switch (true) {
@@ -83,6 +84,7 @@ const number = document.querySelectorAll('.number');
         console.log(firstNumber, 'first at numbers')
         return firstNumber;
         } else if (activatedOperator) {
+            decimal.disabled = false;
             secondNumberDisplayer.textContent += e.target.textContent;
             secondNumber += [Number(e.target.textContent)];
             console.log(secondNumber, 'second at numbers');
@@ -108,6 +110,8 @@ const operators = document.querySelectorAll('.operator');
         return operator;
 })); 
 
+const decimal = document.getElementById('decimal'); 
+    decimal.addEventListener('click', () => decimal.disabled = true);a
 
 const equals = document.getElementById('equal');
     equals.addEventListener('click', () => {
@@ -125,6 +129,7 @@ const calculate = () => {
      } else {
      result = operate(operator, number);
      resultToFirstNumber();
+    
      return result;
      }
 };
