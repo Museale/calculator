@@ -77,7 +77,6 @@ const number = document.querySelectorAll('.number');
     
  number.forEach(item => 
     item.addEventListener('click', e => {
-        console.log(e.key);
         if (!activatedOperator && !result) {
        numberDisplayer.textContent += e.target.textContent;
         firstNumber += [e.target.textContent];
@@ -90,8 +89,14 @@ const number = document.querySelectorAll('.number');
         }
 }));
 
-document.body.addEventListener('keypress', e => {
+document.body.addEventListener('keydown', e => {
     let key = Number(e.key);
+
+    if (e.altKey && key === 0) {
+        console.log(key)
+        return calculate();
+    };
+    
    if (!isNaN(key)) {
     if (!activatedOperator && !result) {
         numberDisplayer.textContent += key;
@@ -103,9 +108,11 @@ document.body.addEventListener('keypress', e => {
              secondNumber += [key];
              return secondNumber;
          }}
+        
         });
 
 const operators = document.querySelectorAll('.operator');
+
     operators.forEach(item =>
         item.addEventListener('click', e => {
             if (!activatedOperator) {
@@ -122,6 +129,8 @@ const operators = document.querySelectorAll('.operator');
             }
         return operator;
 })); 
+    
+       
 
 const decimal = document.getElementById('decimal'); 
     decimal.addEventListener('click', () => decimal.disabled = true);
