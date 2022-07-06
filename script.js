@@ -74,8 +74,10 @@ const c = document.getElementById('c');
     });
     
 const number = document.querySelectorAll('.number');
-    number.forEach(item => 
+    
+ number.forEach(item => 
     item.addEventListener('click', e => {
+        console.log(e.key);
         if (!activatedOperator && !result) {
        numberDisplayer.textContent += e.target.textContent;
         firstNumber += [e.target.textContent];
@@ -87,6 +89,21 @@ const number = document.querySelectorAll('.number');
             return secondNumber;
         }
 }));
+
+document.body.addEventListener('keypress', e => {
+    let key = Number(e.key);
+   if (!isNaN(key)) {
+    if (!activatedOperator && !result) {
+        numberDisplayer.textContent += key;
+         firstNumber += [key];
+         return firstNumber;
+         } else if (activatedOperator) {
+             decimal.disabled = false;
+             secondNumberDisplayer.textContent += key;
+             secondNumber += [key];
+             return secondNumber;
+         }}
+        });
 
 const operators = document.querySelectorAll('.operator');
     operators.forEach(item =>
@@ -110,7 +127,7 @@ const decimal = document.getElementById('decimal');
     decimal.addEventListener('click', () => decimal.disabled = true);
 
 const equals = document.getElementById('equal');
-    equals.addEventListener('click', () => calculate());
+    equals.addEventListener('click',  () => calculate());
 
 const calculate = () => {
     let number = [firstNumber, secondNumber];
@@ -123,7 +140,6 @@ const calculate = () => {
      } else {
      result = operate(operator, number).toFixed(2);
      resultToFirstNumber();
-   
      return result;
      }
 };
