@@ -3,11 +3,10 @@ let firstNumber = '';
 let secondNumber = '';
 let result = '';
 let activatedOperator = 0;
-let activatedDecimal = 0;
 
 const operate = function (operator, number) {
     switch (true) {
-        case (operator === '+' ) : return result  = number.reduce((a,b) => a + b);
+        case (operator === '+') : return number.reduce((a,b) => a + b);
         break;
         case (operator === '/') : return number.reduce((a,b) => a / b);
         break;
@@ -52,7 +51,7 @@ const AC = document.getElementById('ac');
 });
 
 const c = document.getElementById('c');
-    c.addEventListener('click', e => {
+    c.addEventListener('click', () => {
         if (secondNumber) {
             secondNumber = Array.from(secondNumber);
             secondNumber.pop();
@@ -71,23 +70,20 @@ const c = document.getElementById('c');
             firstNumber.pop();
             numberDisplayer.textContent = firstNumber;
             return firstNumber;
-        }
-     
-        });
+        }   
+    });
     
 const number = document.querySelectorAll('.number');
     number.forEach(item => 
     item.addEventListener('click', e => {
         if (!activatedOperator && !result) {
        numberDisplayer.textContent += e.target.textContent;
-        firstNumber += [Number(e.target.textContent)];
-        console.log(firstNumber, 'first at numbers')
+        firstNumber += [e.target.textContent];
         return firstNumber;
         } else if (activatedOperator) {
             decimal.disabled = false;
             secondNumberDisplayer.textContent += e.target.textContent;
-            secondNumber += [Number(e.target.textContent)];
-            console.log(secondNumber, 'second at numbers');
+            secondNumber += [e.target.textContent];
             return secondNumber;
         }
 }));
@@ -111,25 +107,23 @@ const operators = document.querySelectorAll('.operator');
 })); 
 
 const decimal = document.getElementById('decimal'); 
-    decimal.addEventListener('click', () => decimal.disabled = true);a
+    decimal.addEventListener('click', () => decimal.disabled = true);
 
 const equals = document.getElementById('equal');
-    equals.addEventListener('click', () => {
-     calculate();
-});
+    equals.addEventListener('click', () => calculate());
 
 const calculate = () => {
     let number = [firstNumber, secondNumber];
-     number = number.map(n => parseInt(n));
+     number = number.map(n => parseFloat(n));
      if (operator == '/' && secondNumber == 0) {
         numberDisplayer.textContent = 'Why do you hate me?'
         secondNumberDisplayer.textContent = '';
         operatorDisplayer.textContent = '';
-        return 'You son of a bitch' ;
+        return 'You son of a bitch';
      } else {
-     result = operate(operator, number);
+     result = operate(operator, number).toFixed(2);
      resultToFirstNumber();
-    
+   
      return result;
      }
 };
