@@ -72,6 +72,11 @@ const whichNumber = function (e) {
             secondNumberDisplayer.textContent = secondNumber;
             return secondNumber;
         }
+        if (result) {
+            firstNumber += [e.target.textContent];
+            numberDisplayer.textContent = firstNumber;
+            return firstNumber;
+        }
 }
 
 document.body.addEventListener('keydown', e  => {
@@ -150,6 +155,9 @@ const calculate = () => {
             secondNumberDisplayer.textContent = '';
             operatorDisplayer.textContent = '';
             return 'You son of a bitch';
+        } 
+        if (!secondNumber) {
+            numberDisplayer.textContent = firstNumber;
         } else {
         result = operate(operator, number);
         result = Math.round(result * 100) / 100;
@@ -165,14 +173,16 @@ document.body.addEventListener('keydown', e => {
     if (e.key === "Enter") {
         return calculate();
     };
-        // if (e.key === '.' && !activatedDecimalOnKeydown) { 
-        //     return activatedDecimalOnKeydown = true;
+        if (e.key === '.' && !activatedDecimalOnKeydown) { 
+            firstNumber += '.';
+            activatedDecimalOnKeydown = true;
+            return firstNumber;
         
-        // } else if (e.key === '.' && activatedDecimalOnKeydown) {
-        //     e.preventDefault();     
-        //    return activatedDecimalOnKeydown = false;
+        } else if (e.key === '.' && activatedDecimalOnKeydown) {
+            e.preventDefault();     
+           return activatedDecimalOnKeydown = false;
             
-        // }
+        }
 
     if (!isNaN(numberKey)) {
         if (!activatedOperator && !result) {
@@ -184,7 +194,8 @@ document.body.addEventListener('keydown', e => {
              secondNumber += [e.key];  
         return secondNumber;
         } 
-    };
+     
+        };
 });
 
 screen.appendChild(secondNumberDisplayer);
