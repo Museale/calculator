@@ -82,6 +82,8 @@ body {
     flex-direction: row-reverse;
     align-items: flex-end;
     color: white;
+    text-shadow: #408287 2px 1px 1px;
+    
 }
 
 #buttons {

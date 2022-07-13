@@ -3,6 +3,7 @@ let firstNumber = '';
 let secondNumber = '';
 let result = '';
 let activatedOperator = 0;
+let activatedDecimalOnKeydown = false;
 
 const operate = function (operator, number) {
     switch (true) {
@@ -38,120 +39,153 @@ const operatorDisplayer = document.createElement('p');
     operatorDisplayer.classList.add('clickedNum');
 
 const AC = document.getElementById('ac');
-    AC.addEventListener('click', () => {
-        firstNumber = '';
-        secondNumber = '';
-        result = '';
-        operator = '';
-        activatedOperator = 0;
-        numberDisplayer.textContent = '';
-        secondNumberDisplayer.textContent =  '';
-        operatorDisplayer.textContent = '';
-       
-});
+    AC.addEventListener('click', () => deleteAll());
+    document.body.addEventListener('keydown', e => e.key === 'Backspace' ? deleteAll() : false)
+
+const deleteAll = function () {
+    firstNumber = '';
+    secondNumber = '';
+    result = '';
+    operator = '';
+    activatedOperator = 0;
+    numberDisplayer.textContent = '';
+    secondNumberDisplayer.textContent =  '';
+    operatorDisplayer.textContent = '';
+};
 
 const c = document.getElementById('c');
     c.addEventListener('click', () => {
-        if (secondNumber) {
-            secondNumber = Array.from(secondNumber);
-            secondNumber.pop();
-            secondNumberDisplayer.textContent = secondNumber;
-            console.log(secondNumber)
-            return secondNumber;
-        }
-        if (!secondNumber && operator) {
-            operator = '';
-            activatedOperator--;
-            operatorDisplayer.textContent = '';
-            return operator;
-        }
-        if (!secondNumber && !operator) {
-            firstNumber = Array.from(firstNumber);
-            firstNumber.pop();
-            numberDisplayer.textContent = firstNumber;
-            return firstNumber;
-        }   
+        //NEEDS REWORK! NON FUNCTIONAL ON NUMBERS BIGGER THAN 2
     });
     
 const number = document.querySelectorAll('.number');
-    
- number.forEach(item => 
-    item.addEventListener('click', e => {
-        if (!activatedOperator && !result) {
-       numberDisplayer.textContent += e.target.textContent;
+    number.forEach(item => item.addEventListener('click', e => whichNumber(e)));
+
+const whichNumber = function (e) {
+    if (!activatedOperator && !result) {
         firstNumber += [e.target.textContent];
+        numberDisplayer.textContent = firstNumber;
         return firstNumber;
         } else if (activatedOperator) {
             decimal.disabled = false;
-            secondNumberDisplayer.textContent += e.target.textContent;
             secondNumber += [e.target.textContent];
+            secondNumberDisplayer.textContent = secondNumber;
             return secondNumber;
         }
-}));
+}
 
-document.body.addEventListener('keydown', e => {
-    let key = Number(e.key);
-
-    if (e.altKey && key === 0) {
-        console.log(key)
-        return calculate();
-    };
-    
-   if (!isNaN(key)) {
-    if (!activatedOperator && !result) {
-        numberDisplayer.textContent += key;
-         firstNumber += [key];
-         return firstNumber;
-         } else if (activatedOperator) {
-             decimal.disabled = false;
-             secondNumberDisplayer.textContent += key;
-             secondNumber += [key];
-             return secondNumber;
-         }}
-        
-        });
+document.body.addEventListener('keydown', e  => {
+    switch (true) {
+        case (e.key === '+'): {
+            activatedOperator++;
+            operatorDisplayer.textContent = '+';
+            return operator = '+'
+        };
+        break;
+        case (e.key === '-'): {
+            activatedOperator++;
+            operatorDisplayer.textContent = '-';
+            return operator = '-';
+        };
+        break;
+        case (e.key === '/'): {
+            activatedOperator++;
+            operatorDisplayer.textContent = '/';
+            return operator = '/';
+        };
+        break;
+        case (e.key === 'x'): {
+            activatedOperator++;
+            operatorDisplayer.textContent = 'x';
+            return operator = 'x';
+        };
+        break;
+    }
+});
 
 const operators = document.querySelectorAll('.operator');
-
     operators.forEach(item =>
         item.addEventListener('click', e => {
-            if (!activatedOperator) {
-            activatedOperator++;
-            operator = e.target.textContent;  
-            operatorDisplayer.textContent = operator;  
-            } else if (activatedOperator && secondNumber) {
-               calculate();
-               operator = e.target.textContent;  
-               operatorDisplayer.textContent = operator;
-            } else {
-                operator = e.target.textContent;  
-                operatorDisplayer.textContent = operator;
-            }
-        return operator;
-})); 
-    
-       
+            determineOperatorBtn(e);
+            
+}));   
+
+const determineOperatorBtn = function (e) {
+    if (!firstNumber && e.target.textContent == '-') {  
+        firstNumber = '-';
+        numberDisplayer.textContent = firstNumber;  
+        return firstNumber;
+    }
+    if (!secondNumber && e.target.textContent == '-') {  
+        secondNumber = '-';
+        secondNumberDisplayer.textContent = secondNumber;  
+        return secondNumber;
+    }
+    if (!activatedOperator && firstNumber) {
+        activatedOperator++;
+        operator = e.target.textContent; 
+        operatorDisplayer.textContent = operator;  
+        } else if (activatedOperator && secondNumber) {
+           calculate();
+           operator = e.target.textContent;
+           operatorDisplayer.textContent = operator;
+        } else if (result) {
+            operator = e.target.textContent;
+           operatorDisplayer.textContent = operator;
+        }
+    return operator;
+}
 
 const decimal = document.getElementById('decimal'); 
     decimal.addEventListener('click', () => decimal.disabled = true);
-
+        
 const equals = document.getElementById('equal');
-    equals.addEventListener('click',  () => calculate());
+    equals.addEventListener('click', () => calculate());
 
 const calculate = () => {
     let number = [firstNumber, secondNumber];
      number = number.map(n => parseFloat(n));
-     if (operator == '/' && secondNumber == 0) {
-        numberDisplayer.textContent = 'Why do you hate me?'
-        secondNumberDisplayer.textContent = '';
-        operatorDisplayer.textContent = '';
-        return 'You son of a bitch';
-     } else {
-     result = operate(operator, number).toFixed(2);
-     resultToFirstNumber();
+        if (operator == '/' && secondNumber == 0) {
+            numberDisplayer.textContent = 'Why do you hate me?'
+            secondNumberDisplayer.textContent = '';
+            operatorDisplayer.textContent = '';
+            return 'You son of a bitch';
+        } else {
+        result = operate(operator, number);
+        result = Math.round(result * 100) / 100;
+        resultToFirstNumber();
      return result;
      }
 };
+
+document.body.addEventListener('keydown', e => {
+
+    let numberKey = Number(e.key);
+  
+    if (e.key === "Enter") {
+        return calculate();
+    };
+        // if (e.key === '.' && !activatedDecimalOnKeydown) { 
+        //     return activatedDecimalOnKeydown = true;
+        
+        // } else if (e.key === '.' && activatedDecimalOnKeydown) {
+        //     e.preventDefault();     
+        //    return activatedDecimalOnKeydown = false;
+            
+        // }
+
+    if (!isNaN(numberKey)) {
+        if (!activatedOperator && !result) {
+            numberDisplayer.textContent += e.key;
+            firstNumber += [e.key];
+         return firstNumber;
+         } else if (activatedOperator) {
+             secondNumberDisplayer.textContent += e.key;
+             secondNumber += [e.key];  
+        return secondNumber;
+        } 
+    };
+});
 
 screen.appendChild(secondNumberDisplayer);
 screen.appendChild(operatorDisplayer);
