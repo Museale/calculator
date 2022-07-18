@@ -159,7 +159,7 @@ const operators = document.querySelectorAll('.operator');
                     numberDisplayer.textContent = '-';
                     return firstNumber = '-';
                 }
-                if (firstNumber && !secondNumber) {
+                if (firstNumber && operator && !secondNumber) {
                     secondNumberDisplayer.textContent = '-';
                     return secondNumber = '-';
                 }
