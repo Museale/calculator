@@ -1,9 +1,20 @@
-let operator = '';
-let firstNumber = '';
-let secondNumber = '';
-let result = '';
-let activatedOperator = 0;
-let activatedDecimalOnKeydown = false;
+const screen = document.getElementById('display');
+
+const numberDisplayer = document.createElement('p');
+    numberDisplayer.classList.add('clickedNum');
+
+const secondNumberDisplayer = document.createElement('p');
+    secondNumberDisplayer.classList.add('clickedNum');
+
+const operatorDisplayer = document.createElement('p');
+    operatorDisplayer.classList.add('clickedNum');
+
+    let operator = '';
+    let firstNumber = '';
+    let secondNumber = '';
+    let result = '';
+    let activatedOperator = 0;
+    let activatedDecimalOnKeydown = false;
 
 const operate = function (operator, number) {
     switch (true) {
@@ -27,31 +38,10 @@ const resultToFirstNumber = () => {
     return firstNumber;
 };
 
-const screen = document.getElementById('display');
-
-const numberDisplayer = document.createElement('p');
-    numberDisplayer.classList.add('clickedNum');
-
-const secondNumberDisplayer = document.createElement('p');
-    secondNumberDisplayer.classList.add('clickedNum');
-
-const operatorDisplayer = document.createElement('p');
-    operatorDisplayer.classList.add('clickedNum');
-
 const AC = document.getElementById('ac');
     AC.addEventListener('click', () => deleteAll());
     document.body.addEventListener('keydown', e => e.key === 'Backspace' ? deleteAll() : false)
 
-const deleteAll = function () {
-    firstNumber = '';
-    secondNumber = '';
-    result = '';
-    operator = '';
-    activatedOperator = 0;
-    numberDisplayer.textContent = '';
-    secondNumberDisplayer.textContent =  '';
-    operatorDisplayer.textContent = '';
-};
 
 const c = document.getElementById('c');
     c.addEventListener('click', () => {
@@ -79,30 +69,71 @@ const whichNumber = function (e) {
         }
 }
 
+const deleteAll = function () {
+    firstNumber = '';
+    secondNumber = '';
+    result = '';
+    operator = '';
+    activatedOperator = 0;
+    activatedDecimalOnKeydown = false;
+    numberDisplayer.textContent = '';
+    secondNumberDisplayer.textContent =  '';
+    operatorDisplayer.textContent = '';
+
+};
+
 document.body.addEventListener('keydown', e  => {
     switch (true) {
+
         case (e.key === '+'): {
             activatedOperator++;
+            activatedDecimalOnKeydown = false;
             operatorDisplayer.textContent = '+';
             return operator = '+'
         };
         break;
         case (e.key === '-'): {
+            if (!firstNumber) {
+                numberDisplayer.textContent = '-';
+                return firstNumber = '-';
+            }
+            if (firstNumber && !secondNumber) {
+                secondNumberDisplayer.textContent = '-';
+                return secondNumber = '-';
+            }
             activatedOperator++;
+            activatedDecimalOnKeydown = false;
             operatorDisplayer.textContent = '-';
             return operator = '-';
         };
         break;
         case (e.key === '/'): {
             activatedOperator++;
+            activatedDecimalOnKeydown = false;
             operatorDisplayer.textContent = '/';
             return operator = '/';
         };
         break;
         case (e.key === 'x'): {
             activatedOperator++;
+            activatedDecimalOnKeydown = false;
             operatorDisplayer.textContent = 'x';
             return operator = 'x';
+        };
+        break;
+        case (e.key === '.'): {
+            if (!secondNumber && !operator && !activatedDecimalOnKeydown) {
+                firstNumber += '.';
+                activatedDecimalOnKeydown = true;
+                numberDisplayer.textContent = firstNumber;
+                return firstNumber;
+            }
+            if (operator && !activatedDecimalOnKeydown) {
+                secondNumber += '.';
+                activatedDecimalOnKeydown = true;
+                secondNumberDisplayer.textContent = secondNumber;
+                return secondNumber;
+            }
         };
         break;
     }
@@ -116,6 +147,8 @@ const operators = document.querySelectorAll('.operator');
 }));   
 
 const determineOperatorBtn = function (e) {
+    activatedDecimalOnKeydown = false;
+
     if (!firstNumber && e.target.textContent == '-') {  
         firstNumber = '-';
         numberDisplayer.textContent = firstNumber;  
@@ -146,6 +179,11 @@ const decimal = document.getElementById('decimal');
         
 const equals = document.getElementById('equal');
     equals.addEventListener('click', () => calculate());
+    document.body.addEventListener('keydown', e => {
+        if (e.key === "Enter") {
+           return calculate();
+        }
+    });
 
 const calculate = () => {
     let number = [firstNumber, secondNumber];
@@ -170,19 +208,14 @@ document.body.addEventListener('keydown', e => {
 
     let numberKey = Number(e.key);
   
-    if (e.key === "Enter") {
-        return calculate();
-    };
-        if (e.key === '.' && !activatedDecimalOnKeydown) { 
-            firstNumber += '.';
-            activatedDecimalOnKeydown = true;
-            return firstNumber;
-        
-        } else if (e.key === '.' && activatedDecimalOnKeydown) {
-            e.preventDefault();     
-           return activatedDecimalOnKeydown = false;
-            
-        }
+        // if (e.key === '.' && !activatedDecimalOnKeydown) { 
+        //     firstNumber += '.';
+        //     activatedDecimalOnKeydown = true;
+        //     return firstNumber;
+        // } else if (e.key === '.' && activatedDecimalOnKeydown) {
+        //     e.preventDefault();     
+        //    return activatedDecimalOnKeydown = false; 
+        // }
 
     if (!isNaN(numberKey)) {
         if (!activatedOperator && !result) {
@@ -193,8 +226,7 @@ document.body.addEventListener('keydown', e => {
              secondNumberDisplayer.textContent += e.key;
              secondNumber += [e.key];  
         return secondNumber;
-        } 
-     
+        }
         };
 });
 
