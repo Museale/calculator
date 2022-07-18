@@ -172,7 +172,7 @@ const operators = document.querySelectorAll('.operator');
             case (e.key === '/'): {
                 activatedOperator++;
                 activatedDecimalOnKeydown = false;
-                operatorDisplayer.textContent = '/';
+                operatorDisplayer.textContent = '÷';
                     return operator = '/';
             };
             break;
