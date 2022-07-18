@@ -222,6 +222,27 @@ box-shadow:  inset -5px -5px 10px #b15c5c,
     box-shadow: inset -5px -5px 10px #5c6db1,
                 inset  10px 5px 10px #7c93ef;
 }
+#decimal {
+    border:none;
+    width: 27%;
+    aspect-ratio: 2;
+    border-radius: 30px;
+    border-radius: 50%;
+    background: #6bd9e1;
+box-shadow: inset -5px -5px 10px #408287,
+            inset -5px -5px 10px #96ffff;
+    color:white;
+};
+
+
+#decimal:hover {
+    box-shadow: inset -2px -2px 10px #408287,
+    inset 2px 3px 10px #6bd9e1;
+    border-bottom: 2px #84a0b3b1 solid;
+    border-right: 1px #408287;
+    border-top: 1px #5fb9bfa9 solid;
+    border-left: 1px #5fb9bfb9 solid;
+}
 
 .AC {
     background: #df7474;
