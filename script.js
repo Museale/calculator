@@ -9,14 +9,16 @@ const secondNumberDisplayer = document.createElement('p');
 const operatorDisplayer = document.createElement('p');
     operatorDisplayer.classList.add('clickedNum');
 
-    let operator = '';
-    let firstNumber = '';
-    let secondNumber = '';
-    let result = '';
-    let activatedOperator = 0;
-    let activatedDecimalOnKeydown = false;
+//Global variables
+let operator = '';
+let firstNumber = '';
+let secondNumber = '';
+let result = '';
+let activatedOperator = 0;
+let activatedDecimalOnKeydown = false;
 
 const operate = function (operator, number) {
+    //excecutes the mathematical operations
     switch (true) {
         case (operator === '+') : return number.reduce((a,b) => a + b);
         break;
@@ -45,13 +47,28 @@ const AC = document.getElementById('ac');
 
 const c = document.getElementById('c');
     c.addEventListener('click', () => {
-        //NEEDS REWORK! NON FUNCTIONAL ON NUMBERS BIGGER THAN 2
+        if (!secondNumber && !operator) {
+           firstNumber = firstNumber.substring(0, firstNumber.length -1);
+           numberDisplayer.textContent = firstNumber;
+           return firstNumber;
+        };
+        if (operator && !secondNumber) {
+            operator = '';
+            operatorDisplayer.textContent = '';
+            return operator;
+        };
+        if (secondNumber) {
+            secondNumber = secondNumber.substring(0, secondNumber.length -1);
+            secondNumberDisplayer.textContent = secondNumber;
+            return secondNumber;
+        };
     });
     
 const number = document.querySelectorAll('.number');
     number.forEach(item => item.addEventListener('click', e => whichNumber(e)));
 
 const whichNumber = function (e) {
+    //determines what number you clicked and adds to correct sum
     if (!activatedOperator && !result) {
         firstNumber += [e.target.textContent];
         numberDisplayer.textContent = firstNumber;
@@ -83,8 +100,8 @@ const deleteAll = function () {
 };
 
 document.body.addEventListener('keydown', e  => {
+    //returns what operator you pressed on keydown event 
     switch (true) {
-
         case (e.key === '+'): {
             activatedOperator++;
             activatedDecimalOnKeydown = false;
@@ -148,7 +165,6 @@ const operators = document.querySelectorAll('.operator');
 
 const determineOperatorBtn = function (e) {
     activatedDecimalOnKeydown = false;
-
     if (!firstNumber && e.target.textContent == '-') {  
         firstNumber = '-';
         numberDisplayer.textContent = firstNumber;  
@@ -181,7 +197,8 @@ const equals = document.getElementById('equal');
     equals.addEventListener('click', () => calculate());
     document.body.addEventListener('keydown', e => {
         if (e.key === "Enter") {
-           return calculate();
+           calculate();
+           return result;
         }
     });
 
@@ -205,29 +222,20 @@ const calculate = () => {
 };
 
 document.body.addEventListener('keydown', e => {
-
+    //determines what number you pressed on keydown event and adds
+    // aid number to correct sum
     let numberKey = Number(e.key);
-  
-        // if (e.key === '.' && !activatedDecimalOnKeydown) { 
-        //     firstNumber += '.';
-        //     activatedDecimalOnKeydown = true;
-        //     return firstNumber;
-        // } else if (e.key === '.' && activatedDecimalOnKeydown) {
-        //     e.preventDefault();     
-        //    return activatedDecimalOnKeydown = false; 
-        // }
-
-    if (!isNaN(numberKey)) {
-        if (!activatedOperator && !result) {
-            numberDisplayer.textContent += e.key;
-            firstNumber += [e.key];
-         return firstNumber;
-         } else if (activatedOperator) {
-             secondNumberDisplayer.textContent += e.key;
-             secondNumber += [e.key];  
-        return secondNumber;
-        }
-        };
+        if (!isNaN(numberKey)) {
+            if (!activatedOperator && !result) {
+                numberDisplayer.textContent += e.key;
+                firstNumber += [e.key];
+            return firstNumber;
+            } else if (activatedOperator) {
+                secondNumberDisplayer.textContent += e.key;
+                secondNumber += [e.key];  
+            return secondNumber;
+            }
+            };
 });
 
 screen.appendChild(secondNumberDisplayer);
