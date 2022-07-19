@@ -251,12 +251,14 @@ body {
     }
     #buttons {
         margin-top: 0;
+        padding-top: 0;
         width: 100%;
         margin-bottom: 10%;
     }
     #screen {
         width: 80%;
-        margin-bottom: 20px;
+        margin-bottom: 0;
+        padding-bottom: 0;
     }
    
 }
