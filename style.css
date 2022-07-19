@@ -232,7 +232,7 @@ body {
                  inset 5px 10px 10px #ef7c7c;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 500px) {
     body {
         box-shadow: none;
     }
@@ -250,8 +250,8 @@ body {
         margin-left: 2%;
     }
     #buttons {
-        margin-top: 0;
-        padding-top: 0;
+        margin-top: 3%;
+        padding-bottom: 3%;
         width: 100%;
         margin-bottom: 10%;
     }
