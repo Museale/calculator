@@ -30,10 +30,10 @@ body {
     gap: 80px;
     height: 80vh;
     min-height: 600px;
-    max-height: 630px;
+    max-height: 600px;
     width: 80vw;
     max-width: 550px;
-    min-width: 400px;
+    min-width: 350px;
     border-radius: 30%;
     padding: 0.2em;
     background: #a7cbe2;
@@ -92,7 +92,7 @@ body {
     width: 50vw;
     aspect-ratio: 1.5;
     max-width: 300px;
-    min-width: 250px;    
+    min-width: 200px;    
     margin-top: 0.2rem; 
 }
 
@@ -230,4 +230,33 @@ body {
     background: #df7474;
     box-shadow:  inset -5px -5px 10px #b15c5c,
                  inset 5px 10px 10px #ef7c7c;
+}
+
+@media screen and (max-width: 600px) {
+    body {
+        box-shadow: none;
+    }
+    #container {
+        border: #408287 solid 5px;
+        background-color: none;
+        border: none;
+        border-radius: 15%;
+        flex-basis: 0, 1;
+        width: 100%;
+        height: auto;
+        margin-top: 10%;
+        margin-bottom: 10%;
+        margin-right: 2%;
+        margin-left: 2%;
+    }
+    #buttons {
+        margin-top: 0;
+        width: 100%;
+        margin-bottom: 10%;
+    }
+    #screen {
+        width: 80%;
+        margin-bottom: 20px;
+    }
+   
 }

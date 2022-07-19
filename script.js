@@ -125,7 +125,7 @@ const operators = document.querySelectorAll('.operator');
             numberDisplayer.textContent = firstNumber;  
             return firstNumber;
         }
-        if (!secondNumber && e.target.textContent == '-') {  
+        if (!secondNumber && e.target.textContent == '-' && operator) {  
             secondNumber = '-';
             secondNumberDisplayer.textContent = secondNumber;  
             return secondNumber;
